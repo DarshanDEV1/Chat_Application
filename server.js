@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const socketIO = require('socket.io');
 const cors = require('cors');
-const crypto = require('crypto');
 
 // Message Node for Linked List
 class MessageNode {
@@ -51,28 +50,6 @@ class MessageList {
   }
 }
 
-// Encryption and Decryption Functions
-const ENCRYPTION_KEY = crypto.randomBytes(32); // Must be 256 bits (32 characters)
-const IV_LENGTH = 16; // For AES, this is always 16
-
-function encrypt(text) {
-  const iv = crypto.randomBytes(IV_LENGTH);
-  const cipher = crypto.createCipheriv('aes-256-cbc', ENCRYPTION_KEY, iv);
-  let encrypted = cipher.update(text, 'utf8', 'base64');
-  encrypted += cipher.final('base64');
-  return `${iv.toString('base64')}:${encrypted}`;
-}
-
-function decrypt(text) {
-  const textParts = text.split(':');
-  const iv = Buffer.from(textParts.shift(), 'base64');
-  const encryptedText = Buffer.from(textParts.join(':'), 'base64');
-  const decipher = crypto.createDecipheriv('aes-256-cbc', ENCRYPTION_KEY, iv);
-  let decrypted = decipher.update(encryptedText, 'base64', 'utf8');
-  decrypted += decipher.final('utf8');
-  return decrypted;
-}
-
 // Initialize message list
 const messageList = new MessageList();
 
@@ -92,13 +69,11 @@ const io = socketIO(server, {
 // Endpoint to handle sending messages
 app.post('/sendmessage', (req, res) => {
   const { sender, recipient, message } = req.body;
-  const decryptedMessage = decrypt(message);
   const timestamp = new Date().toISOString();
-  messageList.addMessage(sender, recipient, decryptedMessage, timestamp);
+  messageList.addMessage(sender, recipient, message, timestamp);
 
   // Emit encrypted message to both sender and recipient
-  const encryptedForClient = encrypt(decryptedMessage);
-  io.emit('message', { sender, recipient, message: encryptedForClient, timestamp });
+  io.emit('message', { sender, recipient, message: message, timestamp });
   res.status(200).send({ success: true, message: 'Message sent' });
 });
 
