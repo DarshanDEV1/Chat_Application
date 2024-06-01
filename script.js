@@ -4,7 +4,7 @@ const messageInput = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
 const username = prompt('Enter your username:');
 const recipient = prompt('Enter the recipient\'s name:');
-const url = prompt('Enter the code url: ');
+const url = 'https://' + prompt('Enter the code url: ') + '.ngrok-free.app';
 
 // 'https://ba31-117-217-54-22.ngrok-free.app'
 
