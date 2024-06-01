@@ -8,12 +8,13 @@
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 </head>
 <body>
-    <canvas id="background"></canvas>
     <div class="container">
         <header>
             <h1>Chat Application</h1>
         </header>
         <main>
+            <!-- <canvas id="background"></canvas> -->
+            <!-- <iframe id="background" src="view.html"></iframe> -->
             <div class="chat-container">
                 <div class="chat-history">
                     <!-- Chat messages will be dynamically added here -->
@@ -27,9 +28,10 @@
         <footer>
             <p>&copy; 2024 Chat Application. All rights reserved.</p>
         </footer>
+        <div id="debug_area"></div>
     </div>
-    <div id="debug_area"></div>
 
+    <!-- <script type="module" src="three.js"></script> -->
     <script src="script.js"></script>
 </body>
 </html>
