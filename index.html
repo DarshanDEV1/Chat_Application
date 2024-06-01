@@ -4,23 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Application</title>
-
-    <!-- References -->
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-
 </head>
 <body>
-    <canvas id="b_background"></canvas>
-    <script type="module" src="three.js"></script>
-
-
-    <div id="Body">
-        <h1 id="d_display_text">
-            Here the text will be displayed
-        </h1>
-        <input type="button" value="Click Here" onclick="OnClickInvoke('How Are you Doing Boy')">
+    <canvas id="background"></canvas>
+    <div class="container">
+        <header>
+            <h1>Chat Application</h1>
+        </header>
+        <main>
+            <div class="chat-container">
+                <div class="chat-history">
+                    <!-- Chat messages will be dynamically added here -->
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Type your message...">
+                    <button id="sendButton">Send</button>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2024 Chat Application. All rights reserved.</p>
+        </footer>
     </div>
-    
+    <div id="debug_area"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>
