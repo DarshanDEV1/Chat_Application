@@ -6,9 +6,10 @@ const cors = require('cors');
 
 // Message Node for Linked List
 class MessageNode {
-  constructor(sender, recipient, message, timestamp) {
+  // constructor(sender, recipient, message, timestamp) {
+  constructor(sender, message, timestamp) {
     this.sender = sender;
-    this.recipient = recipient;
+    // this.recipient = recipient;
     this.message = message;
     this.timestamp = timestamp;
     this.next = null;
@@ -21,8 +22,10 @@ class MessageList {
     this.head = null;
   }
 
-  addMessage(sender, recipient, message, timestamp) {
-    const newNode = new MessageNode(sender, recipient, message, timestamp);
+  // addMessage(sender, recipient, message, timestamp) {
+  addMessage(sender, message, timestamp) {
+    // const newNode = new MessageNode(sender, recipient, message, timestamp);
+    const newNode = new MessageNode(sender, message, timestamp);
     if (!this.head) {
       this.head = newNode;
     } else {
@@ -40,7 +43,7 @@ class MessageList {
     while (current) {
       messages.push({
         sender: current.sender,
-        recipient: current.recipient,
+        // recipient: current.recipient,
         message: current.message,
         timestamp: current.timestamp
       });
@@ -68,12 +71,15 @@ const io = socketIO(server, {
 
 // Endpoint to handle sending messages
 app.post('/sendmessage', (req, res) => {
-  const { sender, recipient, message } = req.body;
+  // const { sender, recipient, message } = req.body;
+  const { sender, message } = req.body;
   const timestamp = new Date().toISOString();
-  messageList.addMessage(sender, recipient, message, timestamp);
+  // messageList.addMessage(sender, recipient, message, timestamp);
+  messageList.addMessage(sender, message, timestamp);
 
   // Emit encrypted message to both sender and recipient
-  io.emit('message', { sender, recipient, message: message, timestamp });
+  // io.emit('message', { sender, recipient, message: message, timestamp });
+  io.emit('message', { sender, message: message, timestamp });
   res.status(200).send({ success: true, message: 'Message sent' });
 });
 
